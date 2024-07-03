@@ -12,10 +12,13 @@ import {
   fetchTask,
   markTaskCompeted,
 } from "../../Helper/Apis";
+import { useToasts } from "@geist-ui/core";
+import Loader from "../Loader";
 
 const TaskList = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const { setToast } = useToasts();
   const [selectedTask, setSelectedTask] = useState(null);
   const [editTask, setEditTask] = useState({
     name: "",
@@ -40,8 +43,13 @@ const TaskList = () => {
     onSuccess: (data) => {
       setShowDialog(false);
       refetch();
-      setEditTask({ name: "", description: "", dueDate: "" });
-      alert(`Task ${data.taskName} deleted successfully`);
+      setToast({
+        text: ` ${data.taskName} deleted successfully`,
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      setToast({ text: error.message, type: "error" });
     },
   });
 
@@ -50,7 +58,14 @@ const TaskList = () => {
     onSuccess: (data) => {
       setShowDialog(false);
       refetch();
-      alert(`Task ${data.taskName} updated successfully`);
+      setEditTask({ name: "", description: "", dueDate: "" });
+      setToast({
+        text: ` ${data.taskName} updated successfully`,
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      setToast({ text: error.message, type: "error" });
     },
   });
 
@@ -59,7 +74,13 @@ const TaskList = () => {
     onSuccess: (data) => {
       setShowDialog(false);
       refetch();
-      alert(`Task ${data.taskName} marked as completed successfully`);
+      setToast({
+        text: ` ${data.taskName} completed successfully`,
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      setToast({ text: error.message, type: "error" });
     },
   });
 
@@ -96,7 +117,7 @@ const TaskList = () => {
   if (isLoading)
     return (
       <div className="flex items-center justify-center mt-10 w-full text-white">
-        Loading...
+        <Loader />
       </div>
     );
   if (isError)
@@ -117,7 +138,7 @@ const TaskList = () => {
     </div>
   ) : (
     <div className="flex items-center justify-center mt-10 w-full">
-      <div className="space-y-4 w-1/3">
+      <div className="space-y-4 w-full sm:w-2/3 lg:w-1/2 px-4 sm:px-0">
         {notCompletedTasks.map((task) => (
           <div
             key={task.id}

@@ -8,7 +8,7 @@ const EditTaskDialog = ({ task, onEdit, onClose, onChange }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#1e1e1e] p-6 rounded-lg shadow-lg text-white">
+      <div className="bg-[#1e1e1e] p-6 rounded-lg shadow-lg text-white w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
         <h2 className="text-xl font-bold mb-4">Edit Task</h2>
         <div className="mb-4">
           <label className="block mb-2">Task Name:</label>
