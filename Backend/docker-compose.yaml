@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  postgress:
+    container_name: taskManagerDb
+    image: postgres:15.0
+    environment:
+      POSTGRES_USER: "vidhi"
+      POSTGRES_PASSWORD: "admin123"
+      POSTGRES_DB: "postgresdb"
+      PGDATA: "/data"
+    volumes:
+      - ./pgdata:/data
+    ports:
+      - 5000:5432
